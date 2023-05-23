@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Event
+{
+    internal class Program
+    {
+        delegate void Event(int m, int n);
+
+        static event Event SomeEvent;
+        static void OnSomeEvent(int m, int n)
+        {
+            if (SomeEvent != null)
+                SomeEvent(m, n);
+        }
+        static void Main()
+        {
+
+            SomeEvent += (m, n) =>
+                    Console.WriteLine("Сумма:" + (m + n));
+            SomeEvent += (m, n) => { Console.WriteLine("Разность:" + (m - n)); };
+
+            SomeEvent += (m, n) => { Console.WriteLine("Произведение:" + (m * n)); };
+
+            SomeEvent += (m, n) =>
+            {
+                try
+                {
+                    Console.WriteLine("Деление:" + (m / n));
+                }
+                catch
+                {
+                    Console.WriteLine("На 0 делить незя");
+                }
+            };
+
+            OnSomeEvent(1, 0);
+
+            OnSomeEvent(1, 1);
+        }
+    }
+}
